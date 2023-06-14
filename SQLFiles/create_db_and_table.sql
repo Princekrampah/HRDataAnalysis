@@ -67,3 +67,15 @@ SELECT
 	*,
     ROW_NUMBER() OVER(PARTITION BY Department ORDER BY Department, avg_salary DESC) AS position
 FROM CTE_tbl1;
+
+-- How does race(white/black/Asian...) affect employee position?
+WITH cte_tbl AS (SELECT 
+	Position,
+    RaceDesc,
+    COUNT(Position) AS cnt_pos
+FROM HR_data
+GROUP BY Position, RaceDesc)
+SELECT 
+	*,
+    ROW_NUMBER() OVER(PARTITION BY Position ORDER BY cnt_pos DESC) AS rank_position
+FROM cte_tbl;
