@@ -11,7 +11,7 @@
 2. What is the average salary of each category?
 3. How does gender affect the salary of an employee
 4. How does race(white/black/Asian...) affect the salary of an employee
-5. How does employee status affect salary of the employee.
+5. How does race(white/black/Asian...) affect employee position?
 6. How does absence affect the salary of an individual
 7. What is the most common recruitement source and how does recruitement source affect salary and `EmpSatisfaction`
 8. What is the categorization count for `EmploymentStatus`.
@@ -73,3 +73,74 @@
 | Absences   | INT        |
 
 
+## Scripts For Questions Listed
+
+#### 1. To understand the most paid career
+
+```sql
+-- To understand the most paid career
+SELECT 
+	Department,
+    SUM(Salary) AS sum_salary
+FROM HR_data
+GROUP BY Department
+ORDER BY sum_salary DESC;
+```
+
+#### 2. What is the average salary of each category?
+
+```sql
+-- What is the average salary of each category?
+SELECT 
+	Department,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY Department
+ORDER BY avg_salary DESC;
+```
+
+#### 3. How does gender affect the salary of an employee
+
+```sql
+-- How does gender affect the salary of an employee
+SELECT 
+	Department,
+    Sex,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY Department, Sex
+ORDER BY Department, RaceDesc;
+```
+
+
+#### 4. How does race(white/black/Asian...) affect the salary of an employee
+
+```sql
+-- How does race(white/black/Asian...) affect the salary of an employee
+WITH CTE_tbl1 AS (SELECT 
+	Department,
+    RaceDesc,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY Department, RaceDesc)
+SELECT
+	*,
+    ROW_NUMBER() OVER(PARTITION BY Department ORDER BY Department, avg_salary DESC) AS position
+FROM CTE_tbl1;
+```
+
+#### 5. How does race(white/black/Asian...) affect employee position?
+
+```sql
+-- How does race(white/black/Asian...) affect employee position?
+WITH cte_tbl AS (SELECT 
+	Position,
+    RaceDesc,
+    COUNT(Position) AS cnt_pos
+FROM HR_data
+GROUP BY Position, RaceDesc)
+SELECT 
+	*,
+    ROW_NUMBER() OVER(PARTITION BY Position ORDER BY cnt_pos DESC) AS rank_position
+FROM cte_tbl;
+```
