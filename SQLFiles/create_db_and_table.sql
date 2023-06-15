@@ -79,3 +79,87 @@ SELECT
 	*,
     ROW_NUMBER() OVER(PARTITION BY Position ORDER BY cnt_pos DESC) AS rank_position
 FROM cte_tbl;
+
+
+-- What is the most common recruitement source and how does 
+-- recruitement source affect salary and EmpSatisfaction?
+SELECT
+	RecruitmentSource,
+    AVG(Salary) as avg_salary,
+	COUNT(RecruitmentSource) AS count
+FROM HR_data
+GROUP BY RecruitmentSource
+ORDER BY avg_salary DESC;
+
+
+-- What is the categorization count for EmploymentStatus?
+SELECT 
+	*,
+    ROW_NUMBER() OVER(PARTITION BY Department ORDER BY Department DESC) AS status_rank
+FROM(SELECT
+	Department,
+    EmploymentStatus,
+    COUNT(EmploymentStatus) AS status
+FROM HR_data
+GROUP BY Department, EmploymentStatus
+ORDER BY Department, status DESC) AS subquery;
+
+-- What is the average salary based on department?
+SELECT
+	Department,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY Department
+ORDER BY avg_salary DESC;
+
+-- Which state has the most paid salary?
+SELECT
+	State,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY State
+ORDER BY avg_salary DESC;
+
+
+-- What is the most common reason for termination?
+SELECT 
+	TermReason,
+    COUNT(TermReason) AS count
+FROM HR_data
+GROUP BY TermReason
+ORDER BY count DESC;
+
+-- What is the most common reason for termination by race?
+SELECT
+	RaceDesc,
+	TermReason,
+    COUNT(TermReason) AS count
+FROM HR_data
+GROUP BY TermReason, RaceDesc
+ORDER BY RaceDesc, count DESC;
+
+-- What is the most common EmploymentStatus?
+SELECT
+	EmploymentStatus,
+    COUNT(EmploymentStatus) AS count
+FROM HR_data
+GROUP BY EmploymentStatus
+ORDER BY count DESC;
+
+-- Which recruitment source give employees with best performance score?
+SELECT
+	RecruitmentSource,
+    PerformanceScore,
+    COUNT(PerformanceScore) AS perf_cnt
+FROM HR_data
+GROUP BY RecruitmentSource, PerformanceScore
+ORDER BY RecruitmentSource, PerformanceScore;
+
+
+-- Which department has the most absenties?
+SELECT
+	Department,
+    SUM(Absences) AS absence_cnt
+FROM HR_data
+GROUP BY Department
+ORDER BY absence_cnt DESC;
