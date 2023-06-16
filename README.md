@@ -29,8 +29,7 @@
 21. Which state are you likely to get a job(Position) by category?
 22. What is the average age of employees in each department?
 23. Average age by each race?
-24. What is the average age of each department?
-25. What is the average age of each position?
+24. What is the average age of each position?
 
 ### Procedures Followed
 
@@ -288,3 +287,157 @@ ORDER BY absence_cnt DESC;
 ```
 
 ![Image  15](./images/image_15.png)
+
+
+
+#### 16. Which race has the most absenties?
+
+```sql
+-- Which race has the most absenties?
+SELECT
+	RaceDesc,
+    SUM(Absences) AS absence_cnt
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY absence_cnt DESC;
+```
+
+![Image  16](./images/image_16.png)
+
+Looks like the `white` race has most absenties, this does not give a clear picture, when you tend to get the mean. May be because they are the most in our dataset.
+
+To prove this further, lets get the count of each race as well.
+
+```sql
+SELECT
+	RaceDesc,
+    SUM(Absences) AS absence_cnt,
+    COUNT(RaceDesc) as race_cnt
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY absence_cnt DESC;
+```
+
+![Image  16_2](./images/image_16_2.png)
+
+The data is positively skewed, in such a case, the mean is not the best measure for central tendency. The `median` is much preferred in such case.
+
+**Statistical Reading sources**
+
+1. [Measures of central tendencies](https://www.abs.gov.au/statistics/understanding-statistics/statistical-terms-and-concepts/measures-central-tendency#:~:text=In%20a%20skewed%20distribution%2C%20the,the%20middle%20of%20the%20distribution.)
+
+#### 17. Which department has the best employee satisfactions?
+
+```sql
+-- Which department has the best employee satisfactions?
+SELECT
+	Department,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction
+FROM HR_data
+GROUP BY Department
+ORDER BY avg_empl_satisfaction DESC;
+```
+
+![Image  17](./images/image_17.png)
+
+Software engineers tend to be the most satisfied employees. What could be the reason for this? Salary?
+
+![Image  17_2](./images/image_17_2.png)
+
+Well, average salary isn't the case. Does the saying, **"money can't buy happiness"** true? There must be some other parameter affecting this. A leave this to open discussion.
+
+
+#### 18. Which race has the most satisfied employees?
+
+```sql
+-- Which race has the most satisfied employees?
+SELECT
+	RaceDesc,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY avg_empl_satisfaction DESC;
+```
+
+![Image  18](./images/image_18.png)
+
+Using `Average` in the cases may not give us a clearer picture as they counts of each category is different. `Median` is probably a better measure for this. Using SQL for `median` calculation is abit of work. Keep this in mind, `average` is not the best measure in such a case and all the cases when I applied the mean.
+
+
+#### 19. What is the employee satisfaction levels for married/single people?
+
+```sql
+-- What is the employee satisfaction levels for married/single people?
+SELECT
+	MaritalDesc,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY MaritalDesc
+ORDER BY avg_empl_satisfaction DESC;
+```
+
+Again `mean` as a measure of central tendency does not give a clear picture in this case as each `MaritalDesc` section is different in count.
+
+![Image  19](./images/image_19.png)
+
+
+#### 20. Which state has the most satisfied employees?
+
+```sql
+-- Which state has the most satisfied employees?
+SELECT
+	State,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary,
+    COUNT(State) AS state_cnt
+FROM HR_data
+GROUP BY State
+ORDER BY avg_empl_satisfaction DESC;
+```
+
+![Image  20](./images/image_20.png)
+
+#### 22. What is the average age of employees in each department?
+
+
+```sql
+-- What is the average age of employees in each department?
+SELECT
+	Department,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY Department;
+```
+
+![Image  22](./images/image_22.png)
+
+
+#### 23. Average age by each race?
+
+```sql
+SELECT
+	RaceDesc,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY avg_age DESC;
+```
+
+![Image  23](./images/image_23.png)
+
+
+#### 24. What is the average age of each position?
+
+```sql
+-- What is the average age of each position?
+SELECT
+	Position,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY Position
+ORDER BY avg_age DESC;
+```
+
+![Image  24](./images/image_24.png)

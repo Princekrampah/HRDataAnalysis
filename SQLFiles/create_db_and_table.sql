@@ -163,3 +163,75 @@ SELECT
 FROM HR_data
 GROUP BY Department
 ORDER BY absence_cnt DESC;
+
+-- Which race has the most absenties?
+SELECT
+	RaceDesc,
+    SUM(Absences) AS absence_cnt,
+    COUNT(RaceDesc) as race_cnt
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY absence_cnt DESC;
+
+
+-- Which department has the best employee satisfactions?
+SELECT
+	Department,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY Department
+ORDER BY avg_empl_satisfaction DESC;
+
+
+-- Which race has the most satisfied employees?
+SELECT
+	RaceDesc,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY avg_empl_satisfaction DESC;
+
+-- What is the employee satisfaction levels for married/single people?
+SELECT
+	MaritalDesc,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary
+FROM HR_data
+GROUP BY MaritalDesc
+ORDER BY avg_empl_satisfaction DESC;
+
+-- Which state has the most satisfied employees?
+SELECT
+	State,
+    ROUND(AVG(EmpSatisfaction), 2) AS avg_empl_satisfaction,
+    AVG(Salary) AS avg_salary,
+    COUNT(State) AS state_cnt
+FROM HR_data
+GROUP BY State
+ORDER BY avg_empl_satisfaction DESC;
+
+-- What is the average age of employees in each department?
+SELECT
+	Department,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY Department;
+
+-- Average age by each race?
+SELECT
+	RaceDesc,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY RaceDesc
+ORDER BY avg_age DESC;
+
+
+-- What is the average age of each position?
+SELECT
+	Position,
+    AVG(ROUND(DATEDIFF(NOW(), DOB) / 365, 1)) AS avg_age
+FROM HR_data
+GROUP BY Position
+ORDER BY avg_age DESC;
