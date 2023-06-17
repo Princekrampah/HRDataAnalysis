@@ -85,7 +85,7 @@
 | DaysLateLast30             |       INT       |
 | Absences                   |       INT       |
 
-## Scripts For Questions Listed
+3. #### Writing Scripts For Questions Listed
 
 #### 1. To understand the most paid career
 
@@ -124,7 +124,9 @@ GROUP BY Department, Sex
 ORDER BY Department, RaceDesc;
 ```
 
-#### 4. How does race(white/black/Asian...) affect the salary of an employee
+#### 4. How does race(white/black/Asian...) affect the salary of an employee?
+
+[Gain understanding of CTEs in MySQL](https://youtu.be/GbRvy-fZ_r0)
 
 ```sql
 -- How does race(white/black/Asian...) affect the salary of an employee
@@ -141,6 +143,8 @@ FROM CTE_tbl1;
 ```
 
 #### 5. How does race(white/black/Asian...) affect employee position?
+
+[Gain understanding of CTEs in MySQL](https://youtu.be/GbRvy-fZ_r0)
 
 ```sql
 -- How does race(white/black/Asian...) affect employee position?
@@ -171,6 +175,8 @@ ORDER BY avg_salary DESC;
 ```
 
 #### 8. What is the categorization count for EmploymentStatus?
+
+[Gain understanding of Sub-queries in MySQL](https://youtu.be/ryrLlxFt48Q)
 
 ```sql
 -- What is the categorization count for EmploymentStatus?
